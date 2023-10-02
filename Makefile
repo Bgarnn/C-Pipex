@@ -12,13 +12,13 @@ LIBRARIES = -lm -lft -L$(LIBFT_DIRECTORY)
 LIBFT_HEADER = $(LIBFT_DIRECTORY)
 
 HEADERS_DIRECTORY = ./includes/
-HEADERS_LIST = pipex.h
+HEADERS_LIST = pipex.h error.h
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADER)
 
 # Source Files
 SOURCES_DIRECTORY = ./sources/
-SOURCES_LIST = pipex.c
+SOURCES_LIST = pipex.c ft_error.c ft_close_free.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 # Object Files
