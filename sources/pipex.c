@@ -25,14 +25,14 @@ static void	heredoc_input(t_data *data, char *limiter)
 	char	*line;
 	int		fd;
 
-	fd = open("here_doc", O_CREAT | O_WRONLY | O_TRUNC | 0644);
+	fd = open("here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		free_and_exit(data, ERROR_FILE_OPEN_HD, 1);
 	while (1)
 	{
 		write(STDOUT_FILENO, "heredoc> ", 9);
 		line = get_next_line(STDIN_FILENO);
-		if (ft_strncmp(limiter, line, (ft_strlen(limiter) + 1)) == 0)
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 && ((ft_strlen(line) - 1) == ft_strlen(limiter)))
 			break;
 		write(fd, line, ft_strlen(line));
 		free(line);
@@ -59,15 +59,17 @@ static void	init_and_pipe(t_data *data, int argc, char **argv)
 	open_pipe(data);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
 	t_data data;
 
+	(void)env;
 // mandatory: (argc != 5)
 // bonus: (argc < 5)
 	if (argc < 5)
 		error_and_exit(ERROR_INPUT, 1);
 	init_and_pipe(&data, argc, argv);
+	// fork_process(&data, argc, argv, env);
 }
 
 

@@ -54,7 +54,7 @@ char	*ft_line_cut(char	*line)
 		free(stash);
 		stash = NULL;
 	}
-	line[i] = '\0';
+	line[i + 1] = '\0';
 	return (stash);
 }
 
