@@ -11,6 +11,7 @@ void	error_and_exit(char *str, int status)
 
 void	error_file_open(char *file)
 {
+	ft_putstr_fd("Pipex: ", 2);
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(strerror(errno), 2);
