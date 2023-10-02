@@ -18,7 +18,7 @@ INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADER)
 
 # Source Files
 SOURCES_DIRECTORY = ./sources/
-SOURCES_LIST = pipex.c ft_error.c ft_close_free.c ft_fork.c
+SOURCES_LIST = pipex.c ft_error_and_free.c ft_close_pipe.c ft_fork_process.c ft_execute_cmd.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 # Object Files

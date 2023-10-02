@@ -41,9 +41,10 @@ static void	heredoc_input(t_data *data, char *limiter)
 	free(line);
 }
 
-static void	init_and_pipe(t_data *data, int argc, char **argv)
+static void	init_and_pipe(t_data *data, int argc, char **argv, char **env)
 {
 	data->status = 0;
+	data->env = env;
 	data->mode = 'M';
 	data->cmd1_i = 2;
 	if (ft_strncmp("here_doc", argv[1], 9) == 0)
@@ -56,22 +57,30 @@ static void	init_and_pipe(t_data *data, int argc, char **argv)
 	}
 	data->cmd_num = argc - data->cmd1_i - 1;
 	data->pipe_num = data->cmd_num - 1;
+	data->pid_arr = (pid_t *)malloc (data->cmd_num * sizeof(pid_t));
+	if(!data->pid_arr)
+		free_and_exit(data, ERROR_MALLOC_PID, 1);
 	open_pipe(data);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_data data;
+	int	i;
 
-	(void)env;
 // mandatory: (argc != 5)
 // bonus: (argc < 5)
 	if (argc < 5)
 		error_and_exit(ERROR_INPUT, 1);
-	init_and_pipe(&data, argc, argv);
-	// fork_process(&data, argc, argv, env);
+	init_and_pipe(&data, argc, argv, env);
+	fork_process(&data, argc, argv);
+	i = 0;
+	while(i < data.cmd_num)
+		waitpid(data.pid_arr[i++], &data.status, WUNTRACED);
+	if (data.mode == 'H')
+		unlink("here_doc");
+	free_and_exit_no_msg(&data, WEXITSTATUS(data.status));
 }
-
 
 
 	// printf("status = %d \n", data.status);
@@ -86,3 +95,4 @@ int	main(int argc, char **argv, char **env)
 	// 	printf("pipefd = %d \n", data.pipefd_arr[i][1]);
 	// 	i++;
 	// }
+	// return (0);
