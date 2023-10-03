@@ -21,13 +21,15 @@ void	error_and_exit(char *str, int status)
 	exit(status);
 }
 
-void	error_file_open(char *file)
+void	error_file_open(t_data *data, char *file)
 {
 	ft_putstr_fd("Pipex: ", 2);
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(strerror(errno), 2);
-	exit(1);
+	if (access("here_doc", F_OK) == 0)
+		unlink("here_doc");
+	free_and_exit_no_msg(data, 1);
 }
 
 void	free_char_2d(char **ptr)
@@ -52,9 +54,9 @@ void	free_and_exit_no_msg(t_data *data, int status)
 
 	i = 0;
 	ptr = data->pipefd_arr;
-	if (data->pipefd_arr != NULL)
+	if (ptr != NULL)
 	{
-		while (ptr[i])
+		while (i < data->pipe_num)
 		{
 			free(ptr[i]);
 			ptr[i] = NULL;
@@ -77,9 +79,9 @@ void	free_and_exit(t_data *data, char *str, int status)
 
 	i = 0;
 	ptr = data->pipefd_arr;
-	if (data->pipefd_arr != NULL)
+	if (ptr != NULL)
 	{
-		while (ptr[i])
+		while (i < data->pipe_num)
 		{
 			free(ptr[i]);
 			ptr[i] = NULL;

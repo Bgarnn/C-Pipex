@@ -33,7 +33,7 @@ typedef struct s_data
 }				t_data;
 
 void	error_and_exit(char *str, int status);
-void	error_file_open(char *file);
+void	error_file_open(t_data *data, char *file);
 void	free_and_exit(t_data *data, char *str, int status);
 void	free_and_exit_no_msg(t_data *data, int status);
 void	free_char_2d(char **ptr);

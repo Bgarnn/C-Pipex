@@ -22,7 +22,7 @@ static void	outfile_open(t_data *data, int argc, char **argv)
 	else if (data->mode == 'H')
 		fd = open(argv[argc - 1], O_APPEND | O_WRONLY | O_CREAT, 0644);
 	if (fd == -1)
-		error_file_open(argv[argc - 1]);
+		error_file_open(data, argv[argc - 1]);
 	if (dup2(fd, STDOUT_FILENO) == -1)
 		free_and_exit(data, ERROR_DUP2_OUT, 1);
 	close(fd);
@@ -50,7 +50,7 @@ void	fork_process(t_data *data, int argc, char **argv)
 	i = 0;
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		error_file_open(argv[1]);
+		error_file_open(data, argv[1]);
 	if (dup2(fd, STDIN_FILENO) == -1)
 		free_and_exit(data, ERROR_DUP2_IN, 1);
 	close(fd);
