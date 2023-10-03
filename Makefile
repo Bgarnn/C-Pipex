@@ -15,7 +15,7 @@ NAME = pipex
 
 # Compiler and Flags
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra 
 
 # Libraries and Includes
 LIBFT_DIRECTORY = ./libft/

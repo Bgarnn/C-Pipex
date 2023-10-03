@@ -30,13 +30,23 @@ static void	outfile_open(t_data *data, int argc, char **argv)
 
 static void	child_process(t_data *data, int argc, char **argv, int i)
 {
-	if (i == (data->cmd_num - 1))
+	int	fd;
+
+	if (i == 0)
+	{
+		fd = open(argv[1], O_RDONLY);
+		if (fd == -1)
+			error_file_open(data, argv[1]);
+		if (dup2(fd, STDIN_FILENO) == -1)
+			free_and_exit(data, ERROR_DUP2_IN, 1);
+		close(fd);
+		close_pipe_infile(data);
+	}
+	else if (i == (data->cmd_num - 1))
 	{
 		outfile_open(data, argc, argv);
 		close_pipe_outfile(data, i);
 	}
-	else if (i == 0)
-		close_pipe_infile(data);
 	else
 		close_pipe_child(data, i);
 	execute_cmd(data, argv[data->cmd1_i + i]);
@@ -45,15 +55,8 @@ static void	child_process(t_data *data, int argc, char **argv, int i)
 void	fork_process(t_data *data, int argc, char **argv)
 {
 	int	i;
-	int	fd;
 
 	i = 0;
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-		error_file_open(data, argv[1]);
-	if (dup2(fd, STDIN_FILENO) == -1)
-		free_and_exit(data, ERROR_DUP2_IN, 1);
-	close(fd);
 	while (i < data->cmd_num)
 	{
 		data->pid_arr[i] = fork();
