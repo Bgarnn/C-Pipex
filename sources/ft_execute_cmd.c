@@ -1,4 +1,16 @@
-# include "pipex.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_execute_cmd.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kburalek <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/03 09:55:53 by kburalek          #+#    #+#             */
+/*   Updated: 2023/10/03 09:55:54 by kburalek         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "pipex.h"
 
 static char	**path_split(t_data *data, char **cmd_arr, char **env)
 {
@@ -13,7 +25,7 @@ static char	**path_split(t_data *data, char **cmd_arr, char **env)
 		ft_putstr_fd("Pipex: No such file or directory", 2);
 		free_and_exit_no_msg(data, 127);
 	}
-	if(ft_strncmp(*env, "PATH=", 5) == 0)
+	if (ft_strncmp(*env, "PATH=", 5) == 0)
 	{
 		path_arr = ft_split(*env + 5, ':');
 		if (path_arr == NULL)
@@ -37,15 +49,15 @@ static char	*path_from_env(t_data *data, char **cmd_arr, char **env)
 		path = ft_strjoin(path_tmp, cmd_arr[0]);
 		if (path_tmp != NULL)
 			free(path_tmp);
-		if(access (path, F_OK) == 0)
-			break;
+		if (access (path, F_OK) == 0)
+			break ;
 		if (path != NULL)
 			free(path);
 		path = NULL;
 		i++;
 	}
 	free_char_2d(path_arr);
-	return(path);
+	return (path);
 }
 
 static char	*get_path(t_data *data, char **cmd_arr, char **env)
@@ -53,7 +65,7 @@ static char	*get_path(t_data *data, char **cmd_arr, char **env)
 	char	*path;
 
 	path = NULL;
-	if(cmd_arr[0][0] == '/')
+	if (cmd_arr[0][0] == '/')
 		path = ft_strdup(cmd_arr[0]);
 	else
 		path = path_from_env(data, cmd_arr, env);

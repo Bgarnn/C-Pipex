@@ -1,4 +1,16 @@
-# include "pipex.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_error_and_free.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kburalek <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/03 09:55:43 by kburalek          #+#    #+#             */
+/*   Updated: 2023/10/03 09:55:44 by kburalek         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "pipex.h"
 
 void	error_and_exit(char *str, int status)
 {
@@ -35,7 +47,7 @@ void	free_char_2d(char **ptr)
 
 void	free_and_exit_no_msg(t_data *data, int status)
 {
-	int **ptr;
+	int	**ptr;
 	int	i;
 
 	i = 0;
@@ -60,7 +72,7 @@ void	free_and_exit_no_msg(t_data *data, int status)
 
 void	free_and_exit(t_data *data, char *str, int status)
 {
-	int **ptr;
+	int	**ptr;
 	int	i;
 
 	i = 0;

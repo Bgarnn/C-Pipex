@@ -1,25 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_fork_process.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kburalek <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/03 09:56:04 by kburalek          #+#    #+#             */
+/*   Updated: 2023/10/03 09:56:06 by kburalek         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# include "pipex.h"
+#include "pipex.h"
 
-static void outfile_open(t_data *data, int argc, char **argv)
+static void	outfile_open(t_data *data, int argc, char **argv)
 {
-	int fd;
+	int	fd;
 
 	fd = 0;
-	if(data->mode == 'M')
+	if (data->mode == 'M')
 		fd = open(argv[argc - 1], O_TRUNC | O_WRONLY | O_CREAT, 0644);
-	else if(data->mode == 'H')
+	else if (data->mode == 'H')
 		fd = open(argv[argc - 1], O_APPEND | O_WRONLY | O_CREAT, 0644);
 	if (fd == -1)
 		error_file_open(argv[argc - 1]);
-	if(dup2(fd, STDOUT_FILENO) == -1)
+	if (dup2(fd, STDOUT_FILENO) == -1)
 		free_and_exit(data, ERROR_DUP2_OUT, 1);
 	close(fd);
 }
 
 static void	child_process(t_data *data, int argc, char **argv, int i)
 {
-	if(i == (data->cmd_num - 1))
+	if (i == (data->cmd_num - 1))
 	{
 		outfile_open(data, argc, argv);
 		close_pipe_outfile(data, i);
@@ -40,13 +51,13 @@ void	fork_process(t_data *data, int argc, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		error_file_open(argv[1]);
-	if(dup2(fd, STDIN_FILENO) == -1)
+	if (dup2(fd, STDIN_FILENO) == -1)
 		free_and_exit(data, ERROR_DUP2_IN, 1);
 	close(fd);
 	while (i < data->cmd_num)
 	{
 		data->pid_arr[i] = fork();
-		if(data->pid_arr[i] == -1)
+		if (data->pid_arr[i] == -1)
 		{
 			close_pipe_main(data);
 			free_and_exit(data, ERROR_FORK, 1);

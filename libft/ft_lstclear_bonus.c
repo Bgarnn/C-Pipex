@@ -29,7 +29,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 			del(currentnode->content);
 			free(currentnode);
 		}
-	*lst = NULL;
+		*lst = NULL;
 	}
 }
 // delete and free all in (lst)

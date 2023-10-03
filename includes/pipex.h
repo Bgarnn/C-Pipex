@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kburalek <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/03 09:48:40 by kburalek          #+#    #+#             */
+/*   Updated: 2023/10/03 09:48:41 by kburalek         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #ifndef PIPEX_H
 # define PIPEX_H
 
@@ -12,7 +22,6 @@
 
 typedef struct s_data
 {
-	
 	int			status;
 	char		**env;
 	char		mode;
@@ -20,7 +29,7 @@ typedef struct s_data
 	int			cmd_num;
 	int			pipe_num;
 	int			**pipefd_arr;
-	pid_t		*pid_arr; 
+	pid_t		*pid_arr;
 }				t_data;
 
 void	error_and_exit(char *str, int status);

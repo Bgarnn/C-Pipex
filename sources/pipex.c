@@ -1,17 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kburalek <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/03 09:56:16 by kburalek          #+#    #+#             */
+/*   Updated: 2023/10/03 09:56:17 by kburalek         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# include "pipex.h"
+#include "pipex.h"
 
-static void open_pipe(t_data *data)
+static void	open_pipe(t_data *data)
 {
 	int	i;
 
-	data->pipefd_arr = (int**)malloc(data->pipe_num * sizeof(int*));
+	data->pipefd_arr = (int **)malloc(data->pipe_num * sizeof(int *));
 	if (!data->pipefd_arr)
 		free_and_exit(data, ERROR_MALLOC_PIPEFD, 1);
 	i = 0;
 	while (i < data->pipe_num)
 	{
-		data->pipefd_arr[i] = (int*)malloc(2 * sizeof(int));
+		data->pipefd_arr[i] = (int *)malloc(2 * sizeof(int));
 		if (!data->pipefd_arr[i])
 			free_and_exit(data, ERROR_MALLOC_PIPEFD, 1);
 		if (pipe(data->pipefd_arr[i]) == -1)
@@ -32,8 +43,9 @@ static void	heredoc_input(t_data *data, char *limiter)
 	{
 		write(STDOUT_FILENO, "heredoc> ", 9);
 		line = get_next_line(STDIN_FILENO);
-		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 && ((ft_strlen(line) - 1) == ft_strlen(limiter)))
-			break;
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
+			&& ((ft_strlen(line) - 1) == ft_strlen(limiter)))
+			break ;
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
@@ -58,31 +70,30 @@ static void	init_and_pipe(t_data *data, int argc, char **argv, char **env)
 	data->cmd_num = argc - data->cmd1_i - 1;
 	data->pipe_num = data->cmd_num - 1;
 	data->pid_arr = (pid_t *)malloc (data->cmd_num * sizeof(pid_t));
-	if(!data->pid_arr)
+	if (!data->pid_arr)
 		free_and_exit(data, ERROR_MALLOC_PID, 1);
 	open_pipe(data);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_data data;
-	int	i;
+	t_data	data;
+	int		i;
 
-// mandatory: (argc != 5)
-// bonus: (argc < 5)
 	if (argc < 5)
 		error_and_exit(ERROR_INPUT, 1);
 	init_and_pipe(&data, argc, argv, env);
 	fork_process(&data, argc, argv);
 	i = 0;
-	while(i < data.cmd_num)
+	while (i < data.cmd_num)
 		waitpid(data.pid_arr[i++], &data.status, WUNTRACED);
 	if (data.mode == 'H')
 		unlink("here_doc");
 	free_and_exit_no_msg(&data, WEXITSTATUS(data.status));
 }
 
-
+// mandatory: (argc != 5)
+// bonus: (argc < 5)
 	// printf("status = %d \n", data.status);
 	// printf("mode = %c \n", data.mode);
 	// printf("cmd1_i = %d \n", data.cmd1_i);

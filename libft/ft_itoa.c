@@ -44,8 +44,10 @@ char	*ft_itoa(int num)
 	if (str == NULL)
 		return (NULL);
 	if (num < 0)
+	{
 		num = -num;
 		str[0] = '-';
+	}
 	str[len] = '\0';
 	while (num > 0)
 	{
