@@ -65,7 +65,7 @@ static char	*get_path(t_data *data, char **cmd_arr, char **env)
 	char	*path;
 
 	path = NULL;
-	if (cmd_arr[0][0] == '/')
+	if ((access(cmd_arr[0], X_OK) == 0) || (cmd_arr[0][0] == '/'))
 		path = ft_strdup(cmd_arr[0]);
 	else
 		path = path_from_env(data, cmd_arr, env);
