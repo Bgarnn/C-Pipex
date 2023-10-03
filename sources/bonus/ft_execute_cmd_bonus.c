@@ -79,10 +79,11 @@ static char	*get_path(t_data *data, char **cmd_arr, char **env)
 	}
 	if (access(path, F_OK) == -1)
 	{
-		free_char_2d(cmd_arr);
-		ft_putstr_fd("Pipex: No such file or directory: ", 2);
-		ft_putendl_fd(path, 2);
+		ft_putstr_fd("Pipex: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		free(path);
+		free_char_2d(cmd_arr);
 		free_and_exit_no_msg(data, 127);
 	}
 	return (path);
