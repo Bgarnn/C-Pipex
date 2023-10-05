@@ -21,8 +21,10 @@ static char	**path_split(t_data *data, char **cmd_arr, char **env)
 		env++;
 	if (*env == NULL)
 	{
+		ft_putstr_fd("Pipex: ", 2);
+		ft_putstr_fd(cmd_arr[0], 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		free_char_2d(cmd_arr);
-		ft_putstr_fd("Pipex: No such file or directory", 2);
 		free_and_exit_no_msg(data, 127);
 	}
 	if (ft_strncmp(*env, "PATH=", 5) == 0)
@@ -77,7 +79,7 @@ static char	*get_path(t_data *data, char **cmd_arr, char **env)
 		free_char_2d(cmd_arr);
 		free_and_exit_no_msg(data, 127);
 	}
-	if (access(path, F_OK | X_OK) == -1)
+	if (access(path, F_OK) == -1)
 	{
 		ft_putstr_fd("Pipex: ", 2);
 		perror(path);
@@ -115,15 +117,16 @@ void	execute_cmd(t_data *data, char *cmd_argv)
 
 	cmd_arr = get_cmd(data, cmd_argv);
 	path = get_path(data, cmd_arr, data->env);
+	if ((access(cmd_arr[0], X_OK) == -1) && (errno == 13))
+	{
+		ft_putstr_fd("Pipex: ", 2);
+		perror(cmd_arr[0]);
+		free(path);
+		free_char_2d(cmd_arr);
+		free_and_exit_no_msg(data, 126);
+	}
 	if (execve(path, cmd_arr, data->env) == -1)
 	{
-		if (access(path, F_OK) == 0)
-		{
-			ft_putstr_fd("Pipex: ", 2);
-			perror(path);
-			free_char_2d(cmd_arr);
-			free_and_exit_no_msg(data, 127);
-		}
 		free(path);
 		free_char_2d(cmd_arr);
 		free_and_exit_no_msg(data, 1);
