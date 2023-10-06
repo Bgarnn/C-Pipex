@@ -41,7 +41,7 @@ static void	heredoc_input(t_data *data, char *limiter)
 		free_and_exit(data, ERROR_FILE_OPEN_HD, 1);
 	while (1)
 	{
-		write(STDOUT_FILENO, "heredoc> ", 9);
+		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
 		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
 			&& ((ft_strlen(line) - 1) == ft_strlen(limiter)))
