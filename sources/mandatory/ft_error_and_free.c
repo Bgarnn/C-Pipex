@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_error_and_free.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kburalek <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 09:55:43 by kburalek          #+#    #+#             */
-/*   Updated: 2023/10/03 09:55:44 by kburalek         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "pipex.h"
+#include "pipeline.h"
 
 void	error_and_exit(char *str, int status)
 {
@@ -23,7 +11,7 @@ void	error_and_exit(char *str, int status)
 
 void	error_file_open(t_data *data, char *file)
 {
-	ft_putstr_fd("Pipex: ", 2);
+	ft_putstr_fd("pipeline: ", 2);
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(strerror(errno), 2);

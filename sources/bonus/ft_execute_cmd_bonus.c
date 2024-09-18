@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_execute_cmd.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kburalek <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 09:55:53 by kburalek          #+#    #+#             */
-/*   Updated: 2023/10/03 09:55:54 by kburalek         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "pipex.h"
+#include "pipeline.h"
 
 static char	**path_split(t_data *data, char **cmd_arr, char **env)
 {
@@ -21,7 +9,7 @@ static char	**path_split(t_data *data, char **cmd_arr, char **env)
 		env++;
 	if (*env == NULL)
 	{
-		ft_putstr_fd("Pipex: ", 2);
+		ft_putstr_fd("pipeline: ", 2);
 		ft_putstr_fd(cmd_arr[0], 2);
 		ft_putendl_fd(": No such file or directory", 2);
 		free_char_2d(cmd_arr);
@@ -73,7 +61,7 @@ static char	*get_path(t_data *data, char **cmd_arr, char **env)
 		path = path_from_env(data, cmd_arr, env);
 	if (path == NULL)
 	{
-		ft_putstr_fd("Pipex: ", 2);
+		ft_putstr_fd("pipeline: ", 2);
 		ft_putstr_fd(cmd_arr[0], 2);
 		ft_putendl_fd(": command not found", 2);
 		free_char_2d(cmd_arr);
@@ -81,7 +69,7 @@ static char	*get_path(t_data *data, char **cmd_arr, char **env)
 	}
 	if (access(path, F_OK) == -1)
 	{
-		ft_putstr_fd("Pipex: ", 2);
+		ft_putstr_fd("pipeline: ", 2);
 		perror(path);
 		free(path);
 		free_char_2d(cmd_arr);
@@ -96,7 +84,7 @@ static char	**get_cmd(t_data *data, char *cmd_argv)
 
 	if (cmd_argv == NULL || ft_strlen(cmd_argv) == 0)
 	{
-		ft_putendl_fd("Pipex: : command not found", 2);
+		ft_putendl_fd("pipeline: : command not found", 2);
 		free_and_exit_no_msg(data, 127);
 	}
 	cmd_arr = ft_split(cmd_argv, ' ');
@@ -104,7 +92,7 @@ static char	**get_cmd(t_data *data, char *cmd_argv)
 		free_and_exit(data, ERROR_PATH_SPLIT, 1);
 	if (cmd_arr[0] == NULL)
 	{
-		ft_putendl_fd("Pipex: : command not found", 2);
+		ft_putendl_fd("pipeline: : command not found", 2);
 		free_and_exit_no_msg(data, 127);
 	}
 	return (cmd_arr);
@@ -119,7 +107,7 @@ void	execute_cmd(t_data *data, char *cmd_argv)
 	path = get_path(data, cmd_arr, data->env);
 	if ((access(cmd_arr[0], X_OK) == -1) && (errno == 13))
 	{
-		ft_putstr_fd("Pipex: ", 2);
+		ft_putstr_fd("pipeline: ", 2);
 		perror(cmd_arr[0]);
 		free(path);
 		free_char_2d(cmd_arr);
